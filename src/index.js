@@ -37,8 +37,32 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+const WHITESPACE = "**********";
+const CHARS = {
+  "00": "",
+  "10": ".",
+  "11": "-"
+}
+
+String.prototype.toChunks = function(n) {
+  let chunks = [];
+  for (let i = 0; i < this.length; i += n) {
+    chunks.push(this.substr(i, n));
+  }
+  return chunks;
+}
+
 function decode(expr) {
-    // write your solution here
+  let decodeBlock = block => {
+    if (block == WHITESPACE) { return " "; }
+    let code = block.toChunks(2)
+      .map(x => CHARS[x])
+      .join("");
+    return MORSE_TABLE[code];
+  }
+  return expr.toChunks(10)
+    .map(decodeBlock)
+    .join("");
 }
 
 module.exports = {
